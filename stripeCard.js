@@ -47,8 +47,39 @@ router.post("/addNewCard/:id", async (req, res) => {
         Error: error.raw.message,
       });
     }
-  });
+});
   
+
+// Get List of all saved card of the customers
+router.get("/viewAllCards/:id", async (req, res) => {
+    let cards = [];
+    try {
+      const savedCards = await stripe.customers.listSources( req.params.id, {
+        object: "card",
+      });
+      const cardDetails = Object.values(savedCards.data);
+  
+      cardDetails.forEach((cardData) => {
+        let obj = {
+          cardId: cardData.id,
+          cardType: cardData.brand,
+          cardExpDetails: `${cardData.exp_month}/${cardData.exp_year}`,
+          cardLast4: cardData.last4,
+        };
+        cards.push(obj);
+      });
+      return res.status(200).send({
+        cardDetails: cards,
+      });
+    } catch (error) {
+      return res.status(400).send({
+        Error: error.raw.message,
+      });
+    }
+});
+  
+  
+
   
 
 
