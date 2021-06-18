@@ -79,12 +79,19 @@ router.get("/viewAllCards/:id", async (req, res) => {
 });
   
   
-
+// Delete a saved card of the customer
+router.post("/deleteCard/:customerId/:cardId", async (req, res) => {
+    try {
+      const deleteCard = await stripe.customers.deleteSource(req.params.customerId, req.params.cardId);
+      return res.status(200).send(deleteCard);
+    } catch (error) {
+      return res.status(400).send({
+        Error: error.raw.message,
+      });
+    }
+});
   
-
-
-
-
+  
 
 
 
