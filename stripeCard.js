@@ -92,6 +92,31 @@ router.post("/deleteCard/:customerId/:cardId", async (req, res) => {
 });
   
   
+// Payment With an Existing Card
+router.post("/charge", async (req, res) => {
+    const { amount,  email, customerId } = req.body;
+
+    try {
+      const createCharge = await stripe.charges.create({
+        amount: amount,
+        currency: "usd",
+        receipt_email: email,
+        customer: customerId,
+        description: `Stripe Charge Of Amount ${amount} for Payment`,
+      });
+      if (createCharge.status === "succeeded") {
+        return res.status(200).send({ Success: createCharge });
+      } else {
+        return res
+          .status(400)
+          .send({ Error: "Please try again later for payment" });
+      }
+    } catch (error) {
+      return res.status(400).send({
+        Error: error.raw.message,
+      });
+    }
+});
 
 
 
