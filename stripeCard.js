@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Stripe_Key = "";
+const Stripe_Key = "sk_test_51J3DGCCSN2jNmtALD6nLdovyoaaKZIJ2i3yfk5s38wzi86uQVUYNy7FQPxQ2jS5hd09MnPwTwqcLMIUwi7roH4c800UnstWHEF";
 const stripe = require("stripe")(Stripe_Key);
 
 // Add a new card of the customer
@@ -167,6 +167,24 @@ router.get("/refund/:charge", async (req, res) => {
     });
   }
 })
+
+
+//list all refunded charges
+router.get("/getAllRefundedCharges", async (req, res) => {
+  try {
+    const refund = await stripe.refunds.list(
+      {
+        limit: req.body.limit
+      }
+    );
+    return res.status(200).send({
+      Details: refund
+    });
+  } catch (error) {
+    return res.status(400).send({ Error: error.raw.message });
+  }
+});
+
 
 
 module.exports = router;
