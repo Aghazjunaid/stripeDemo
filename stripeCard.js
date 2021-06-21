@@ -118,7 +118,18 @@ router.post("/charge", async (req, res) => {
     }
 });
 
-
+//Create a full refund
+router.get("/fullRefund/:charge", async (req, res) => {
+  try {
+    const refundCharge = await stripe.refunds.create({
+      charge: req.params.charge});
+    return res.status(200).send(refundCharge);
+  } catch (error) {
+    return res.status(400).send({
+      Error: error.raw.message,
+    });
+  }
+})
 
 
 
