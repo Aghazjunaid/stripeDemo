@@ -169,4 +169,22 @@ router.get("/refund/:charge", async (req, res) => {
 })
 
 
+//list all refunded charges
+router.get("/getAllRefundedCharges", async (req, res) => {
+  try {
+    const refund = await stripe.refunds.list(
+      {
+        limit: req.body.limit
+      }
+    );
+    return res.status(200).send({
+      Details: refund
+    });
+  } catch (error) {
+    return res.status(400).send({ Error: error.raw.message });
+  }
+});
+
+
+
 module.exports = router;
