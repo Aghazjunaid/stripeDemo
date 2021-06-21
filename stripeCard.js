@@ -118,6 +118,23 @@ router.post("/charge", async (req, res) => {
     }
 });
 
+//list all charges
+router.get("/getAllCharges", async (req, res) => {
+  try {
+    const charge = await stripe.charges.list(
+      {
+        limit: req.body.limit
+      }
+    );
+    return res.status(200).send({
+      Details: charge
+    });
+  } catch (error) {
+    return res.status(400).send({ Error: error.raw.message });
+  }
+});
+
+
 //Create a full refund
 router.get("/fullRefund/:charge", async (req, res) => {
   try {
