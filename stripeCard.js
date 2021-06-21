@@ -131,6 +131,25 @@ router.get("/fullRefund/:charge", async (req, res) => {
   }
 })
 
+//Create a Partial refund
+router.get("/refund/:charge", async (req, res) => {
+  try {
+    const charge = await stripe.charges.retrieve(
+      req.params.charge
+    );
+
+    const refundCharge = await stripe.refunds.create({
+      charge: req.params.charge,
+      amount: charge.amount * 0.95
+
+    });
+    return res.status(200).send(refundCharge);
+  } catch (error) {
+    return res.status(400).send({
+      Error: error.raw.message,
+    });
+  }
+})
 
 
 module.exports = router;
