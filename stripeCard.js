@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Stripe_Key = "sk_test_51J3DGCCSN2jNmtALD6nLdovyoaaKZIJ2i3yfk5s38wzi86uQVUYNy7FQPxQ2jS5hd09MnPwTwqcLMIUwi7roH4c800UnstWHEF";
+const Stripe_Key = "";
 const stripe = require("stripe")(Stripe_Key);
 
 // Add a new card of the customer
